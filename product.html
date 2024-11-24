@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <title>Peony Pharma - Product List</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link rel="stylesheet" href="style.css">
+    <style>
+ 
+      body {
+        background-color: #e9f5ff;
+        font-family: Arial, sans-serif;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+
+      .header {
+        background-color: #2a9d8f;
+        color: white;
+        padding: 5px 270px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .navbar {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-left: auto;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: color 0.3s, transform 0.3s;
+  position: relative;
+}
+
+.navbar a span {
+  font-size: 0.8rem;
+  margin-top: 5px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.navbar a:hover {
+  color: #ffdd57;
+  transform: scale(1.1);
+}
+
+.navbar a:hover span {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.navbar a i {
+  transition: transform 0.3s, color 0.3s;
+}
+
+.navbar a:hover i {
+  transform: scale(1.2);
+  color: #ffdd57;
+}
+
+      .card-slider {
+        display: flex;
+        overflow-x: auto;
+        gap: 15px;
+        padding: 10px;
+        scroll-snap-type: x mandatory;
+      }
+
+      .card-slider .card {
+        flex: 0 0 auto;
+        scroll-snap-align: center;
+      }
+
+      h1 {
+        font-family: "Arial Black", sans-serif;
+        text-align: center;
+        color: #ffffff;
+        margin: 20px 0;
+        font-size: 1.8em;
+      }
+
+       .search-container {
+        text-align: center;
+        margin: 20px;
+      }
+
+      .search-bar {
+        width: 300px;
+        padding: 10px;
+        font-size: 1em;
+        border: 2px solid #2a9d8f;
+        border-radius: 8px;
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .search-bar:focus {
+        border-color: #21867a;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      section {
+        margin: 20px auto;
+        padding: 20px;
+        max-width: 1000px;
+        background-color: #f0f0f0;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border: 2px solid #2a9d8f;
+      }
+
+      h2 {     
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #fff;
+        text-align: center;
+        padding: 15px 20px;
+        margin: 30px 0;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #2a9d8f, #21867a);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        text-transform: capitalize;
+        position: relative;
+      }
+
+      .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 200px;
+        background-color: #e9f5f2;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        background-color: #c8e6e2;
+      }
+
+      .card img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 10px;
+        border: 2px solid #2a9d8f;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .card:hover img {
+        transform: scale(1.1); 
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      }
+
+      .card-description h3 {
+        margin: 0;
+        font-size: 1em;
+        color: #1d3557;
+        text-align: center;
+      }
+
+      .card-description p {
+        margin: 5px 0 0;
+        color: #4f5d75;
+        text-align: center;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        animation: fadeOut 0.5s;
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      .modal-content {
+        width: 600px;
+        height: 500px;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .modal-content img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .modal-content:hover img {
+        transform: scale(1.05); 
+      }
+
+      .modal.show {
+        display: flex;
+        animation: fadeIn 0.5s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 2em;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .scroll-down-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 5px 12px;
+        font-size: 16px;
+        background-color: #2a9d8f;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .scroll-down-button:hover {
+        background-color: #21867a;
+        transform: translateY(2px);
+      }
+
+      .header,
+      footer {
+        animation: fadeInHeaderFooter 0.8s ease-out forwards;
+      }
+
+      .social-media-icons a {
+        color: white;
+        margin: 0 10px;
+        font-size: 24px;
+        transition: color 0.3s;
+      }
+
+      .social-media-icons a:hover {
+        color: #ffdd57;
+        transform: scale(1.2);
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+
+      @keyframes fadeInHeaderFooter {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .card-slider-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #2a9d8f;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 50%;
+        font-size: 1.5em;
+        cursor: pointer;
+        z-index: 10;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+      }
+
+      .arrow.left {
+        left: -20px;
+      }
+
+      .arrow.right {
+        right: -20px;
+      }
+
+      .arrow:hover {
+        background-color: #21867a;
+      }
+
+      section h3 {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+        font-size: 1.1em; 
+        font-weight: 520; 
+        color: #1d3557; 
+        text-transform: uppercase; 
+        letter-spacing: 1px; 
+        margin-bottom: 10px; 
+        border-bottom: 2px solid #2a9d8f; 
+        padding-bottom: 5px; 
+        text-align: center; 
+      }
+      
+      
+    </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Peony Pharmaceutical Products</h1>
+    <div class="navbar">
+      <a href="companyprofile.html"><i class="fas fa-home"></i></a>
+      <a href="product.html"><i class="fas fa-box-open"></i></a>
+      <a href="#footer"><i class="fas fa-envelope"></i></a>
+    </div>
+  </div>
+   
+
+    <div class="search-container">
+        <input type="text" id="searchBar" class="search-bar" onkeyup="searchProducts()" placeholder="Search for products..." />
+      </div>
+    
+    <section>
+      <h2>Sterile Dosage Forms</h2>
+      <h3>Beta Lactam</h3>
+     
+      <div class="card-slider" id="infusBetaLactam">
+        <div class="card">
+          <img src="image/infus/Infus_Albumin_Hipoalbuminemia_Hipovolemia.png" alt="Infus Albumin" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Albumin</h3>
+            <p>Hipoalbuminemia Hipovolemia.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/infus/Infus_Amino_Acid_10__Nutrisi_Parenteral.png" alt="Infus Amino Acid 10" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Amino Acid 10</h3>
+            <p>Nutrisi Parenteral.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/infus/Infus_Dextrose_10__Hipoglikemia_berat.png" alt="Infus Dextrose 10" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Dextrose 10</h3>
+            <p>Hipoglikemia Berat.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/infus/Infus_Glukosa_5__Hipoglikemia.png" alt="Infus Glukosa 5" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Glukosa 5</h3>
+            <p>Hipoglikemia.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/infus/Infus_Hartmann_s_Solution_Dehidrasi.png" alt="Hartmann s Solution" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Hartmann s Solution</h3>
+            <p>Dehidrasi.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/infus/Infus_Mannito_20__Gagal_Ginjal_Akut.png" alt="Mannito 20" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Mannito 20</h3>
+            <p>Gagal Ginjal Akut.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/infus/Infus_Potassium_Chloride_0,3__Mencegah_Hipokalemia.png" alt="Potassium Chloride 0,3" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Potassium Chloride 0,3</h3>
+            <p>Mencegah Hipokalemia.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/infus/Infus_Ringer_Lactate_Elektrolit.png" alt="Ringer Lactate" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Ringer Lactate</h3>
+            <p>Elektrolit.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/infus/Infus_Sodium_Bicarbonate_1,4__Asidosis_metabolik.png" alt="Sodium Bicarbonate 1,4" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Sodium Bicarbonate 1,4</h3>
+            <p>Asidosis Metabolik.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/infus/Infus_Sodium_Chloride_0,9__Larutan_Fisiologis.png" alt="Sodium Chloride 0,9" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Sodium Chloride 0,9</h3>
+            <p>Larutan Fisiologis.</p>
+          </div>
+        </div>
+      </div>
+    
+      <h3>Non Beta Lactam</h3>
+      <div class="card-slider" id="vialNonBetaLactam">
+        <div class="card">
+          <img src="image/vial/Vial Aztreonam_Infeksi bakteri gram negatif.png" alt="Aztreonam" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Aztreonam</h3>
+            <p>Infeksi Bakteri Fram Negatif.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/vial/Vial Ciprofloxacin_Infeksi saluran kemih dan infeksi kulit.png" alt="Ciprofloxacin" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Ciprofloxacin</h3>
+            <p>Infeksi Saluran Kemih dan Infeksi Kulit.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/vial/Vial Clindamycin_Infeksi jaringan lunak dan tulang.png" alt="Clindamycin" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Clindamycin</h3>
+            <p>Infeksi jaringan lunak dan tulang.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/vial/Vial Daptomycin_Infeksi kulit.png" alt="Daptomycin" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Daptomycin</h3>
+            <p>Infeksi Kulit.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/vial/Vial Gentamicin_Infeksi gram negatif.png" alt="Gentamicin" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Gentamicin</h3>
+            <p>Infeksi Gram Negatif.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/vial/Vial Levofloxacin_Infeksi saluran pernapasan dan urin.png" alt="Levofloxacin" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Levofloxacin</h3>
+            <p>Infeksi Saluran Pernapasan dan Urin.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/vial/Vial Linezolid_Infeksi bakteri gram positif.png" alt="Linezolid" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Linezolid</h3>
+            <p>Infeksi Bakteri Gram Positif.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/vial/Vial Metronidazole_Infeksi anaerob.png" alt="Metronidazole" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Metronidazole</h3>
+            <p>Infeksi Anaerob.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/vial/Vial Tigecycline_Infeksi intra-abdomen.png" alt="Tigecycline" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Tigecycline</h3>
+            <p>Infeksi Intra-Abdomen.</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="image/vial/Vial Vancomycin_Infeksi resisten bakteri.png" alt="Vancomycin" onclick="openModal(this)" />
+          <div class="card-description">
+            <h3>Vancomycin</h3>
+            <p>Infeksi Resisten Bakteri.</p>
+          </div>
+        </div>
+        </section>
+    
+        <section>
+          <h2>Liquid Dosage Forms (Syrup)</h2>
+          <div class="card-container">
+          <div class="card">
+            <img
+              src="image/syrup/Amoxicilin_Infeksi_Bakteri.png"
+              alt="Amoxicillin Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Amoxicillin Syrup</h3>
+              <p>Infeksi Bakteri.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Erytromycin_Infeksi Bakteri.png"
+              alt="Erythromycin Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Erythromycin Syrup</h3>
+              <p>Infeksi Bakteri.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Paracetamol_Antipiretik.png"
+              alt="Paracetamol Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Paracetamol Syrup</h3>
+              <p>Antipiretik.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Ibuprofen_Nyeri.png"
+              alt="Ibuprofen Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Ibuprofen Syrup</h3>
+              <p>Nyeri.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Ambroxol_Batuk_berdahak.png"
+              alt="Ambroxol Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Ambroxol Syrup</h3>
+              <p>Batuk Berdahak.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Calcium_Vitamin_Kalsium.png"
+              alt="Calcium Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Calcium Syrup</h3>
+              <p>Vitamin Kalsium.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Dextromethorphan_Batuk_kering.png"
+              alt="Dextromethorphan Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Dextromethorphan Syrup</h3>
+              <p>Batuk Kering.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Diphenhydramine_Antihisyamine.png"
+              alt="Diphenhydramine Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Diphenhydramine Syrup</h3>
+              <p>Antihisyamine.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Furosemide_Edema.png"
+              alt="Furosemide Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Furosemide Syrup</h3>
+              <p>Edema.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Hydroxide_Gangguan_Saluran_Pencernaan.png"
+              alt="Hydroxide Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Hydroxide Syrup</h3>
+              <p>Gangguan Saluran Pencernaan.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Lactulose_Sembelit.png"
+              alt="Furosemide Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Lactulose Syrup</h3>
+              <p>Sembelit.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Loratadine_Alergi.png"
+              alt="Loratadine Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Loratadine Syrup</h3>
+              <p>Alergi.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Multivitamin_Vitamin_imun_tubuh_dan_nafsu_makan.png"
+              alt="Multivitamin Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Multivitamin Syrup</h3>
+              <p>Vitamin imun tubuh dan nafsu makan.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Promethazine_Antihistamin.png"
+              alt="Promethazine Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Promethazine Syrup</h3>
+              <p>Antihistamin.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Ranitidine_Gangguan_Pencernaan.png"
+              alt="Ranitidine Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Ranitidine Syrup</h3>
+              <p>Gangguan Pencernaan.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Salbutamol_Gangguan_pernapasan.png"
+              alt="Salbutamol Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Salbutamol Syrup</h3>
+              <p>Gangguan Pernapasan.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Simethicone_Perut_kembug.png"
+              alt="Simethicone Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Simethicone Syrup</h3>
+              <p>Perut Kembung.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Vitamin_D3_Vitamin_kesehatan_tulang.png"
+              alt="Vitamin D3 Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Vitamin D3 Syrup</h3>
+              <p>Vitamin Kesehatan Tulang.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Vitamin_B_Defisiensi_multivitamin.png"
+              alt="Vitamin B Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Vitamin B Syrup</h3>
+              <p>Defisiensi Multivitamin.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/syrup/Vitamin_C_Daya_Tahan_Tubuh.png"
+              alt="Vitamin C Syrup"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Vitamin C Syrup</h3>
+              <p>Daya Tahan Tubuh.</p>
+            </div>
+          </div>
+        </section>
+    
+        <section>
+          <h2>Solid Dosage Forms</h2>
+          <div class="card-container">
+          <div class="card">
+            <img
+              src="image/tablet/Tablet_Amoxicilin_Infeksi_bakteri.png"
+              alt="Amoxicillin Tablet"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Amoxicillin Tablet</h3>
+              <p>Infeksi Bakteri.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/tablet/Tablet_Cefadroxil_Infeksi_bakteri.png"
+              alt="Cefadroxil Tablet"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Cefadroxil Tablet</h3>
+              <p>Infeksi Bakteri.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/tablet/Tablet_Azithromycin_Infeksi_saluran_pernapasan.png"
+              alt="Azithromycin Tablet"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Azithromycin Tablet</h3>
+              <p>Infeksi Saluran Pernafasan.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/tablet/Tablet_Paracetamol_Demam.png"
+              alt="Paracetamol Tablet"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Paracetamol Tablet</h3>
+              <p>Demam.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/tablet/Tablet_Amlodipine_Hipertensi.png"
+              alt="Amlodipine Tablet"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Amlodipine Tablet</h3>
+              <p>Hipertensi.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/tablet/Tablet_Omeprazol_GERD.png"
+              alt="Paracetamol Tablet"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Omeprazol Tablet</h3>
+              <p>GERD.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/tablet/Tablet_Ibuprofen_Nyeri_ringan.png"
+              alt="Paracetamol Tablet"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Ibuprofen Tablet</h3>
+              <p>Nyeri Ringan.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/tablet/Tablet_Mefenamic_acid_Nyeri_ringan_hingga_sedang.png"
+              alt="Mefenamic Acid Tablet"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Mefenamic Acid Tablet</h3>
+              <p>Nyeri Ringan Hingga Sedang.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/tablet/Tablet_Metformin_Mengontrol_kadar_gula_darah.png"
+              alt="Metformin Tablet"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Metformin Tablet</h3>
+              <p>Mengontrol Kadar Gula Darah.</p>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="image/tablet/Tablet_Simvastin_Menurunkan_Kadar_LDL.png"
+              alt="Simvastin Acid Tablet"
+              onclick="openModal(this)"
+            />
+            <div class="card-description">
+              <h3>Simvastin Tablet</h3>
+              <p>Menurunkan Kadar LDL.</p>
+            </div>
+          </div>
+        </section>
+    
+    <div id="imageModal" class="modal">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div class="modal-content">
+        <img id="modalImage" src="" alt="Enlarged Image" />
+      </div>
+    </div>
+
+    <button class="scroll-down-button" onclick="scrollToBottom()">⬇</button>
+
+    <footer
+    id="footer"
+    style="
+      background-color: #2a9d8f;
+      color: white;
+      text-align: center;
+      padding: 22px 0;
+    "
+  >
+    <div class="social-media-icons">
+      <a href="https://facebook.com" target="_blank"
+      ><i class="fab fa-instagram"></i
+      ></a>
+      <a href="https://twitter.com" target="_blank"
+        ><i class="fab fa-twitter"></i
+      ></a>
+      <a href="https://linkedin.com" target="_blank"
+        ><i class="fab fa-linkedin-in"></i
+      ></a>
+    </div>
+    <p>
+      <i class="fas fa-phone"></i> +62 812-3456-7890 |
+      <i class="fas fa-envelope"></i>
+      <a
+        href="mailto:info@peonypharma.com"
+        style="color: white; text-decoration: none"
+        >peonypharma@gmail.com</a
+      >
+    </p>
+    <p>&copy; 2024 Peony Pharmaceutical Company. All rights reserved.</p>
+  </footer>
+
+
+    <script>
+      function openModal(imageElement) {
+  const modal = document.getElementById("imageModal");
+  const modalImg = document.getElementById("modalImage");
+
+  modalImg.src = imageElement.src;
+  modal.classList.add("show");
+
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+}
+
+function closeModal() {
+  const modal = document.getElementById("imageModal");
+  modal.classList.remove("show");
+}
+
+      function scrollToBottom() {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth"
+        });
+      }
+
+      function searchProducts() {
+  const input = document.getElementById("searchBar").value.toLowerCase();
+  const sections = document.querySelectorAll("section");
+  let hasResults = false;
+
+  sections.forEach((section) => {
+    const cards = section.querySelectorAll(".card");
+    let sectionHasResults = false;
+
+    cards.forEach((card) => {
+      const title = card.querySelector("h3").innerText.toLowerCase();
+      const description = card.querySelector("p").innerText.toLowerCase();
+
+      if (title.includes(input) || description.includes(input)) {
+        card.style.display = "flex"; 
+        sectionHasResults = true; 
+      } else {
+        card.style.display = "none"; 
+      }
+    });
+
+    if (sectionHasResults) {
+      section.style.display = "block"; 
+      hasResults = true; 
+    } else {
+      section.style.display = "none";
+    }
+  });
+
+  if (!hasResults) {
+    alert("No matching products found.");
+  }
+}
+
+      document.querySelectorAll('.card-slider').forEach((slider) => {
+  slider.addEventListener('wheel', (event) => {
+    event.preventDefault();
+    slider.scrollBy({
+      left: event.deltaY < 0 ? -300 : 300,
+      behavior: 'smooth',
+    });
+  });
+});
+
+function scrollToBottom() {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      }
+
+      const contactLink = document.querySelector('.navbar a[href="#footer"]');
+      const footerSection = document.querySelector("#footer");
+
+      contactLink.addEventListener("click", (event) => {
+        event.preventDefault(); 
+        footerSection.scrollIntoView({
+          behavior: "smooth", 
+          block: "start", 
+        });
+      });
+    </script>
+</body>
+</html>
